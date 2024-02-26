@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/DerivTestAutomation/.vs
+/DerivTestAutomation/DerivWebAutomationTest/bin/Debug/net6.0
+/DerivTestAutomation/DerivWebAutomationTest/obj/Debug/net6.0
+/DerivTestAutomation/DerivWebSocketTest/bin/Debug
+/DerivTestAutomation/DerivWebSocketTest/obj/Debug
+/DerivTestAutomation/DerivWebSocketTest/obj/Release/net6.0
+/DerivTestAutomation/DerivWebSocketTest/obj
+/DerivTestAutomation/DerivWebAutomationTest/obj
