@@ -1,13 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DerivWebSocketTest
 {
-    [TestClass]
-    public class UnitTest1
+    public class DerivWebSocket
     {
-        string responceData = null;
-        
+        public string responceData = null;
+
 
         static async Task<string> ReceiveDataAsysnc(ClientWebSocket clientWebSocket)
         {
@@ -27,7 +30,7 @@ namespace DerivWebSocketTest
         async public Task ReceiveData(string endPoint, string message)
         {
             Uri url = new Uri(endPoint);
-            using(ClientWebSocket clientWebSocket = new ClientWebSocket())
+            using (ClientWebSocket clientWebSocket = new ClientWebSocket())
             {
                 try
                 {
@@ -35,12 +38,13 @@ namespace DerivWebSocketTest
                     await SendDataAsync(clientWebSocket, message);
                     responceData = await ReceiveDataAsysnc(clientWebSocket);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine("Exception : " + ex.Message);
                 }
-                finally{
-                    if(clientWebSocket.State == WebSocketState.Open)
+                finally
+                {
+                    if (clientWebSocket.State == WebSocketState.Open)
                     {
                         await clientWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "", CancellationToken.None);
                     }
@@ -53,17 +57,5 @@ namespace DerivWebSocketTest
                 await clientWebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
             }
         }
-
-        [TestMethod]
-        public void Test_WebSocket_StatusId()
-        {
-            ReceiveData("wss://ws.derivws.com/websockets/v3?app_id=1089", "{\r\n \"states_list\": \"id\"\r\n}");
-            Thread.Sleep(TimeSpan.FromSeconds(10));
-            Rootobject responceObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Rootobject>(responceData);
-            Assert.IsTrue(!String.IsNullOrEmpty(responceData), $"Responce is : {responceData}");
-            Assert.IsTrue(responceObject.states_list.Where(t => t.text.Equals("Sumatra Selatan")).ToList()[0].value.Equals("SS"));
-
-        }
-
     }
 }
