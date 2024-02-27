@@ -32,7 +32,13 @@ namespace DerivWebAutomationTest
         [FindsBy(How = How.XPath, Using = ".//a[contains(@href,'MyDetails')]")]
         public IWebElement MyInfoSelector { get; set; }
 
-        public void VerifyDashBoardPageLoaded()
+        [FindsBy(How = How.XPath, Using = ".//span[@class='oxd-userdropdown-tab']")]
+        public IWebElement MyProfileSelector { get; set; }
+
+        [FindsBy(How = How.PartialLinkText, Using = "Logout")]
+        public IWebElement logOutLink { get; set; }
+
+        public DashBoardPage VerifyDashBoardPageLoaded()
         {
             string newUrl = driver.Url;
             Assert.IsTrue(newUrl.Contains("dashboard"), "User not navigated to dashboard url");
@@ -40,6 +46,7 @@ namespace DerivWebAutomationTest
             Assert.IsTrue(headerText.Contains("Dashboard"), "Dashboard header not available");
             string backgroundColor = DashBoardPane.GetCssValue("background-color");
             Assert.IsTrue(backgroundColor.Equals("rgba(255, 123, 29, 1)"), "Dashboardpane is not selected in default");
+            return new DashBoardPage();
         }
 
         public MyInfoPage GotoMyInfoPage()
@@ -48,8 +55,18 @@ namespace DerivWebAutomationTest
             wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
             MyInfoSelector.Click();
             wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
-            Thread.Sleep(5000);
+            Thread.Sleep(10000);
             return new MyInfoPage();
+        }
+
+        public LoginPage UserLogOut()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(45));
+            wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
+            MyProfileSelector.Click();
+            logOutLink.Click();
+            wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
+            return new LoginPage();
         }
     }
 }

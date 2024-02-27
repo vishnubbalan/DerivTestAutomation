@@ -33,11 +33,22 @@ namespace DerivWebAutomationTest
             wait.Until(T => DateOfBirthDatePicker.Enabled);
             string dob = DateOfBirthDatePicker.GetAttribute("value");
             DateTime parsedDate;
-            string[] formats = { "yyyy-dd-MM" };
+            string[] formats = { "yyyy-MM-dd" };
             var isValidFormat = DateTime.TryParseExact(dob, formats, new CultureInfo("en-US"), DateTimeStyles.None, out parsedDate);
-            Assert.IsTrue(isValidFormat, "No valid date tim Date of Birth");
+            Assert.IsTrue(isValidFormat, "No valid date time Date of Birth");
             return this;
         }
+
+        public MyInfoPage verifySavedDateofBirth(string dateOfBirth)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(45));
+            wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
+            wait.Until(T => DateOfBirthDatePicker.Enabled);
+            string dob = DateOfBirthDatePicker.GetAttribute("value");
+            Assert.IsTrue(dob.Contains(dateOfBirth), "Mismatch in saved date of birth");
+            return this;
+        }
+
 
         public MyInfoPage ChangeDateOfBirth(string newDate)
         {
