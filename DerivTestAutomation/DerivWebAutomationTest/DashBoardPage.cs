@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,9 @@ namespace DerivWebAutomationTest
         [FindsBy(How = How.XPath, Using = ".//a[contains(@href,'dashboard')]")]
         public IWebElement DashBoardPane { get; set; }
 
+        [FindsBy(How = How.XPath, Using = ".//a[contains(@href,'MyDetails')]")]
+        public IWebElement MyInfoSelector { get; set; }
+
         public void VerifyDashBoardPageLoaded()
         {
             string newUrl = driver.Url;
@@ -36,6 +40,16 @@ namespace DerivWebAutomationTest
             Assert.IsTrue(headerText.Contains("Dashboard"), "Dashboard header not available");
             string backgroundColor = DashBoardPane.GetCssValue("background-color");
             Assert.IsTrue(backgroundColor.Equals("rgba(255, 123, 29, 1)"), "Dashboardpane is not selected in default");
+        }
+
+        public MyInfoPage GotoMyInfoPage()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(45));
+            wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
+            MyInfoSelector.Click();
+            wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
+            Thread.Sleep(5000);
+            return new MyInfoPage();
         }
     }
 }

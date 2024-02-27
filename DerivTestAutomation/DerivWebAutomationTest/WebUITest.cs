@@ -31,10 +31,15 @@ namespace DerivWebAutomationTest
         public void VerifyAndChangeDateOfBirth()
         {
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
-
+            Random random = new Random();
+            string year = random.Next(2000, 2020).ToString();
             new LoginPage()
                 .DoUserLogin("admin", "admin123")
-                .VerifyDashBoardPageLoaded();
+                .GotoMyInfoPage()
+                .verifyDateOfBirthValue()
+                .ChangeDateOfBirth($"{year}-15-10")
+                .verifyDateOfBirthValue();
+
         }
 
         [TestCleanup]
