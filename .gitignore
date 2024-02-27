@@ -3,7 +3,6 @@
 ################################################################################
 
 /DerivTestAutomation/.vs
-/DerivTestAutomation/DerivWebAutomationTest/bin/Debug/net6.0
 /DerivTestAutomation/DerivWebAutomationTest/obj/Debug/net6.0
 /DerivTestAutomation/DerivWebSocketTest/bin/Debug
 /DerivTestAutomation/DerivWebSocketTest/obj/Debug
